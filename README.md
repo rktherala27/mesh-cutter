@@ -102,4 +102,8 @@ tests/data/                   Test input files
 examples/                     User-facing example STL files
 ```
 
-The project stores the working mesh as vertex coordinates plus triangular faces that index the shared vertex array. This is different from raw STL triangle soup, where each facet repeats its three coordinates. ASCII STL represents a triangulated surface using facets with three vertices. [web:947]
+## How the mesh is stored
+
+An STL file describes each triangle using three corner points. When triangles share a corner, STL may write that point repeatedly. This project instead stores each point once in a **vertex list**. Each triangle then refers to its three corners by their positions in that list.
+
+For example, if the vertex list contains points numbered `0`, `1`, and `2`, then the face `(0, 1, 2)` means “make a triangle from points 0, 1, and 2.” When another triangle uses point `0`, it refers to that same point. This helps the program recognize how the triangles connect.
