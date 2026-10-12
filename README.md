@@ -20,9 +20,15 @@ cmake --build build
 ctest --test-dir build --output-on-failure
 ```
 
-## Build and test on Windows
+## Build and test on Windows (untested)
 
-Install CMake and a C++17 compiler first. For MSVC, open **Developer PowerShell for Visual Studio** or **Developer Command Prompt for Visual Studio**. These commands assume the Visual Studio CMake generator:
+I have not tested these instructions on Windows. They are provided as a guide and should be checked on a Windows system with a C++ compiler installed.
+
+For the MSVC compiler, follow Microsoft's instructions to install C++ support. Select the **Desktop development with C++** workload, which includes the MSVC compiler and Windows build tools:
+
+[Install C and C++ support in Visual Studio](https://learn.microsoft.com/en-us/cpp/build/vscpp-step-0-installation?view=msvc-170)
+
+After installation, open **Developer PowerShell for Visual Studio** or **Developer Command Prompt for Visual Studio**, navigate to the project directory, and run:
 
 ```powershell
 cmake -S . -B build
@@ -30,9 +36,11 @@ cmake --build build --config Release
 ctest --test-dir build -C Release --output-on-failure
 ```
 
-If using a single-configuration generator such as Ninja or MinGW Makefiles, omit `--config Release` from the build and test commands. The executable path varies by generator: with Visual Studio it is commonly `build\Release\cutter.exe`; with a single-configuration generator it is commonly `build\cutter.exe`.
+These commands assume the Visual Studio CMake generator. The build and test commands have not been verified on Windows.
 
-CTest runs the test programs registered by the project. A passing test suite verifies the tested behavior; it does not imply the not-yet-implemented mesh cut is complete.
+With Visual Studio, the executable is commonly located at `build\Release\cutter.exe`. With a single-configuration generator such as Ninja or MinGW Makefiles, it is commonly at `build\cutter.exe`; the exact path depends on the generator.
+
+CTest runs the tests registered by the project. Passing tests only verifies the behavior covered by those tests; it does not mean the mesh-cutting functionality is complete.
 
 ## Command-line usage
 
