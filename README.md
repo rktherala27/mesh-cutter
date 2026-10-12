@@ -89,7 +89,7 @@ Positive signed distance means the vertex is on the normal-facing side; negative
 - Consistent face winding does not by itself prove that all faces point outward (may be inward).
 - Winding repair cannot fill holes or fix non-manifold topology.
 - Having both `Above` and `Below` vertices is evidence of a crossing for the current classification stage; the program does not calculate the actual intersection points yet.
-- Vertices, edges, or complete faces lying on the plane are classified using the tolerance band, but this version does not construct a robust cut for those degenerate cases.
+- Vertices lying on the plane are classified using the tolerance band, but this version does not construct a robust cut for those degenerate cases.
 - Point-inside-mesh testing is not implemented yet.
 
 ## Repository layout
