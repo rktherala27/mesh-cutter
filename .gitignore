@@ -1,0 +1,37 @@
+# Build output
+/build/
+/build-*/
+
+# CMake-generated files
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+Testing/
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps/
+
+# Personal CMake settings
+CMakeUserPresets.json
+
+# Compiled files
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+*.exe
+
+# Editor and IDE files
+.vscode/
+.idea/
+*.swp
+*~
+
+# OS-generated files
+.DS_Store
+Thumbs.db
