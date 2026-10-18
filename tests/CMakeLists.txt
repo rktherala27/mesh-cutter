@@ -26,3 +26,8 @@ add_test(NAME test_planecut COMMAND test_planecut)
 add_executable(test_faceintersection test_faceintersection.cpp)
 target_link_libraries(test_faceintersection PRIVATE surface_mesh_cutter)
 add_test(NAME test_faceintersection COMMAND test_faceintersection)
+
+# Test: SplitFace basic definite crossings
+add_executable(test_splitface test_splitface.cpp)
+target_link_libraries(test_splitface PRIVATE surface_mesh_cutter)
+add_test(NAME test_splitface COMMAND test_splitface)

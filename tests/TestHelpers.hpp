@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdexcept>
+#include "surface_mesh_cutter/Vec3.hpp"
 
 #ifndef TEST_DATA_DIR
 #define TEST_DATA_DIR "tests/data"
