@@ -21,3 +21,8 @@ add_test(NAME test_meshtopology COMMAND test_meshtopology)
 add_executable(test_planecut test_planecut.cpp)
 target_link_libraries(test_planecut PRIVATE surface_mesh_cutter)
 add_test(NAME test_planecut COMMAND test_planecut)
+
+# Test: Face intersection (above, below, and crossing)
+add_executable(test_faceintersection test_faceintersection.cpp)
+target_link_libraries(test_faceintersection PRIVATE surface_mesh_cutter)
+add_test(NAME test_faceintersection COMMAND test_faceintersection)
