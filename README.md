@@ -126,32 +126,6 @@ classifying signed distances near zero. Choose it in the coordinate scale
 used by the STL. STL itself does not encode physical units, so the input
 coordinates and tolerance must use a consistent unit convention.
 
-### Run the example
-
-Assuming the example cube spans `z = 0` to `z = 1`, a plane through its
-middle is `z = 0.5`:
-
-Linux:
-
-```bash
-./build/cutter examples/cube.stl 0 0 0.5 0 0 1 1e-9
-```
-
-Windows, Visual Studio generator:
-
-```powershell
-.\build\Release\cutter.exe examples\cube.stl 0 0 0.5 0 0 1 1e-9
-```
-
-Windows, single-configuration generator:
-
-```powershell
-.\build\cutter.exe examples\cube.stl 0 0 0.5 0 0 1 1e-9
-```
-
-Adjust the plane point to match the actual example mesh coordinates. The
-command assumes `examples/cube.stl` is present in the repository.
-
 ## Current processing pipeline
 
 1. Read the ASCII STL into a triangle-soup mesh.
