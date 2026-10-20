@@ -15,6 +15,7 @@ add_library(surface_mesh_cutter
     src/MergeVertices.cpp
     src/MeshTopology.cpp
     src/PlaneCutInternal.cpp
+    src/PlaneCut.cpp
 )
 
 

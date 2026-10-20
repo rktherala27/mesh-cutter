@@ -31,3 +31,7 @@ add_test(NAME test_faceintersection COMMAND test_faceintersection)
 add_executable(test_splitface test_splitface.cpp)
 target_link_libraries(test_splitface PRIVATE surface_mesh_cutter)
 add_test(NAME test_splitface COMMAND test_splitface)
+
+add_executable(test_cutmesh_sharedEdge test_cutmesh_sharedEdge.cpp)
+target_link_libraries(test_cutmesh_sharedEdge PRIVATE surface_mesh_cutter)
+add_test(NAME test_cutmesh_sharedEdge COMMAND test_cutmesh_sharedEdge)
