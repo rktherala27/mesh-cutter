@@ -22,7 +22,7 @@ signed volume, and cuts the mesh with a user-defined plane.
 | Cut a closed mesh with a plane and cap the resulting boundary | Implemented |
 | Automatic merge-tolerance selection | Not implemented |
 | Hole detection and hole filling | Not implemented |
-| Cutting planes passing exactly through mesh vertices | Not fully implemented |
+| Cutting planes passing exactly/within tolerance, through mesh vertices | Not fully implemented |
 | Multiple separate intersection loops | Not implemented |
 | Unit tests | Implemented |
 
