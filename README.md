@@ -88,47 +88,33 @@ The program merges nearby vertices using the supplied tolerance. After
 merging, some very small triangles may have two identical vertex indices.
 These faces no longer represent valid triangles and are removed.
 
-Removing a degenerate face does not necessarily create a hole. In this
-project, the removed faces were zero-area slivers whose edges had already
-become shared by neighboring valid faces after welding. Therefore, the
-remaining mesh remained closed.
+Removing a degenerate face does not necessarily create a hole. If the removed
+face was a zero-area sliver, its two remaining edges may already be shared by
+neighboring valid faces after welding. In that case, the surrounding mesh
+remains closed.
 
-The STL writer uses 17 significant digits so that vertex coordinates survive
-an export-and-reload cycle without becoming near-duplicates again.
+However, removing a degenerate face may create a hole in other meshes. Hole
+detection and hole filling are not implemented.
 
-## Sphere example
+### Example: `sphere.stl`
 
 The included `sphere.stl` contains facets with two nearly identical corner
-vertices. These near-duplicates arise from limited STL coordinate precision.
+vertices. These vertices differ by approximately `0.0001` in each coordinate. A merge
+tolerance of `0.0002` or larger is required to weld them into one vertex.
 
-For example, one facet contains both of these vertices:
+After welding, the affected facet has two identical vertex indices and becomes
+degenerate. The program removes it. In this particular mesh, the remaining
+mesh remains closed because the removed face was a zero-area sliver whose
+edges were already shared by neighboring valid faces.
 
-```text
-vertex  0.550000E+02  0.550000E+02  0.500000E+01
-vertex  0.549999E+02  0.549999E+02  0.500000E+01
-```
-
-The two vertices differ by approximately `0.0001` in each coordinate. They are
-two corners of the same facet, not merely duplicated vertices shared between
-neighboring facets.
-
-A merge tolerance of `0.0002` or larger is required to weld these two corners
-into one vertex. Once welded, the affected facet has two identical vertex
-indices and becomes degenerate. The program then removes that degenerate facet.
-
-With a smaller tolerance, the near-duplicate vertices are not merged. The
-sphere may therefore remain topologically invalid and cannot be cut
-successfully.
+With a smaller tolerance, the near-duplicate vertices cannot be merged and the
+sphere may remain topologically invalid.
 
 Use this command for `sphere.stl`:
 
 ```bash
 ./build/cutter sphere.stl 55 55 25 0 0 0.5 0.0002
 ```
-
-After welding, the sphere has 112 unique vertices and 220 valid faces. The
-program removes the degenerate facets and can cut the mesh with the supplied
-plane.
 
 ## Current limitations
 
@@ -142,7 +128,6 @@ plane.
 - A plane passing exactly through a mesh vertex is not fully supported by the
   cutting path.
 - Multiple separate intersection loops are not yet handled correctly.
-- Self-intersecting meshes are not detected or repaired.
 - Consistent face winding does not prove that all normals point outward.
 
 ## Repository layout
