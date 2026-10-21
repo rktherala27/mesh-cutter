@@ -32,7 +32,19 @@ signed volume, and cuts the mesh with a user-defined plane.
 - A C++17 compiler.
 - No external geometry library.
 
-## Build and test
+## CMake options
+
+| Option | Default | Description |
+|---|---|---|
+| `BUILD_CUTTER_APP` | `ON` | Builds the `cutter` command-line application. |
+
+To build only the library and tests:
+
+```bash
+cmake -S . -B build -DBUILD_CUTTER_APP=OFF
+```
+
+## Build and test on Linux
 
 ```bash
 cmake -S . -B build
@@ -40,10 +52,38 @@ cmake --build build
 ctest --test-dir build --output-on-failure
 ```
 
-The executable is normally created at:
+The executable is created at:
 
 ```text
 build/cutter
+```
+
+## Build and test on Windows
+
+These instructions have not been tested on Windows. They are provided as a
+guide and should be verified on a Windows system with a C++ compiler
+installed.
+
+For MSVC, install the **Desktop development with C++** workload in Visual
+Studio. Then open **Developer PowerShell for Visual Studio** and run:
+
+```powershell
+cmake -S . -B build
+cmake --build build --config Release
+ctest --test-dir build -C Release --output-on-failure
+```
+
+With the Visual Studio generator, the executable is commonly located at:
+
+```text
+build\Release\cutter.exe
+```
+
+With a single-configuration generator such as Ninja or MinGW Makefiles, it is
+commonly located at:
+
+```text
+build\cutter.exe
 ```
 
 ## Command-line usage
