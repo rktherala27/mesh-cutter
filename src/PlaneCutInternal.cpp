@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <vector>
 #include <algorithm>
+#include <limits>
 
 #include "surface_mesh_cutter/VectorMath.hpp"
 #include "surface_mesh_cutter/PlaneCutInternal.hpp"
@@ -268,6 +269,12 @@ namespace plane_cut_internal
         std::vector<std::size_t> abovePolygon;
         std::vector<std::size_t> belowPolygon;
 
+        std::size_t firstIntersectionIndex =
+            std::numeric_limits<std::size_t>::max();
+
+        std::size_t secondIntersectionIndex =
+            std::numeric_limits<std::size_t>::max();
+
         for (std::size_t localIndex = 0; localIndex < 3; ++localIndex)
         {
             const std::size_t current = face[localIndex];
@@ -321,6 +328,24 @@ namespace plane_cut_internal
                         newVertices,
                         nextNewVertexIndex,
                         intersectionVertexCache);
+
+                // Store the first and second intersection vertices
+                //  in the order they are encountered around the triangle.
+                if (firstIntersectionIndex ==
+                    std::numeric_limits<std::size_t>::max())
+                {
+                    firstIntersectionIndex = intersectionIndex;
+                }
+                else
+                {
+                    secondIntersectionIndex = intersectionIndex;
+                }
+
+                // This edge is one boundary edge of the final cut loop.
+                // We intentionally do not sort these indices.
+                result.cutEdge = {
+                    firstIntersectionIndex,
+                    secondIntersectionIndex};
 
                 abovePolygon.push_back(intersectionIndex);
                 belowPolygon.push_back(intersectionIndex);

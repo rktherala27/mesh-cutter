@@ -189,50 +189,89 @@ int main(int argc, char *argv[])
         std::cout << "  Vertices below:   " << belowCount << '\n';
         std::cout << "  Vertices on-plane: " << onPlaneCount << '\n';
 
-        if (aboveCount > 0 && belowCount > 0)
+        if (aboveCount == 0 || belowCount == 0)
         {
             std::cout
-                << "  Some vertices are above and some are below.\n"
-                << "  There is a definite intersection with the mesh surface.\n";
-        }
-        else if (aboveCount > 0 && belowCount == 0)
-        {
-            std::cout << "  No vertices are below the plane.\n";
+                << "\nThe plane does not definitely cross the mesh.\n"
+                << "No cut will be performed.\n";
 
-            if (onPlaneCount > 0)
-            {
-                std::cout << "  Some vertices are within the plane tolerance.\n";
-            }
-            else
-            {
-                std::cout << "  No intersection is indicated by vertex signs.\n";
-            }
-        }
-        else if (belowCount > 0 && aboveCount == 0)
-        {
-            std::cout << "  No vertices are above the plane.\n";
-
-            if (onPlaneCount > 0)
-            {
-                std::cout << "  Some vertices are within the plane tolerance.\n";
-            }
-            else
-            {
-                std::cout << "  No intersection is indicated by vertex signs.\n";
-            }
-        }
-        else if (onPlaneCount > 0)
-        {
-            std::cout << "  All vertices are within the plane tolerance.\n";
-        }
-        else
-        {
-            std::cout << "  The mesh has no vertices.\n";
+            return 0;
         }
 
-        std::cout
-            << "\nThis version stops at vertex classification. "
-               "It does not split faces or write two output meshes.\n";
+        // Step 10: Cut the mesh with the plane.
+        std::cout << "\nStep 10: Cutting the mesh with the plane...\n";
+
+        const PlaneCutResult result =
+            cutMeshWithPlane(mesh, plane, tolerance);
+
+        if (!result.cutPerformed)
+        {
+            std::cout << "The plane did not produce two cut meshes.\n";
+
+            for (const std::string &message : result.messages)
+            {
+                std::cout << "  " << message << '\n';
+            }
+
+            return 4;
+        }
+
+        std::cout << "Finished cutting the mesh.\n\n";
+
+        std::cout << "Above mesh:\n";
+        std::cout << "  Vertices: " << result.above.vertexCount() << '\n';
+        std::cout << "  Faces:    " << result.above.faceCount() << '\n';
+
+        std::cout << "\nBelow mesh:\n";
+        std::cout << "  Vertices: " << result.below.vertexCount() << '\n';
+        std::cout << "  Faces:    " << result.below.faceCount() << '\n';
+
+        // Step 11: Verify that both output meshes are closed.
+        std::cout << "\nStep 11: Checking output meshes...\n";
+
+        const TopologyReport aboveClosedReport =
+            checkClosed(result.above);
+
+        const TopologyReport belowClosedReport =
+            checkClosed(result.below);
+
+        std::cout << "  Above mesh is "
+                  << (aboveClosedReport.isClosed ? "closed" : "NOT closed")
+                  << '\n';
+
+        std::cout << "  Below mesh is "
+                  << (belowClosedReport.isClosed ? "closed" : "NOT closed")
+                  << '\n';
+
+        if (!aboveClosedReport.isClosed)
+        {
+            for (const std::string &problem : aboveClosedReport.problems)
+            {
+                std::cout << "    Above problem: " << problem << '\n';
+            }
+        }
+
+        if (!belowClosedReport.isClosed)
+        {
+            for (const std::string &problem : belowClosedReport.problems)
+            {
+                std::cout << "    Below problem: " << problem << '\n';
+            }
+        }
+
+        // Step 12: Write the two resulting meshes.
+        std::cout << "\nStep 12: Writing output STL files...\n";
+
+        writeAsciiStl(result.above, "above.stl");
+        writeAsciiStl(result.below, "below.stl");
+
+        std::cout << "Wrote above.stl\n";
+        std::cout << "Wrote below.stl\n";
+
+        for (const std::string &message : result.messages)
+        {
+            std::cout << "Note: " << message << '\n';
+        }
 
         return 0;
     }

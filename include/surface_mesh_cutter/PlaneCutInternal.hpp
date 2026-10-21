@@ -38,6 +38,10 @@ namespace plane_cut_internal
     {
         std::vector<Face> aboveFaces;
         std::vector<Face> belowFaces;
+
+        // The two intersection vertices created for this face.
+        // This edge lies on the final cut boundary.
+        std::array<std::size_t, 2> cutEdge{};
     };
 
     std::vector<double> computeSignedDistances(
