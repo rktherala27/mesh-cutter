@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
+#include <iomanip>
 
 Mesh readAsciiStl(const std::string &path)
 {
@@ -58,6 +59,7 @@ void writeAsciiStl(const Mesh &mesh, const std::string &path)
         throw std::runtime_error("cannot open file for writing: " + path);
 
     out << "solid mesh\n";
+    out << std::setprecision(17);
 
     for (const Face &f : mesh.faces)
     {
